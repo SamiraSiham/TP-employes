@@ -277,7 +277,6 @@ void delete_employee(int codeEmp){
     int num = 0;
     FILE* pf = fopen("employees.txt","r");
     FILE* pf2 = fopen("temp.txt","w");
-    char* confirm = malloc(5);
     if (pf == NULL) {
         printf("File doesn't open !\n");
         return;
@@ -295,17 +294,13 @@ void delete_employee(int codeEmp){
     }
     for(int i = 0; i < num; i++){
         if(emp[i].code == codeEmp){
-            printf("Are you sure ? [yes/no] : ");
-            scanf("%s" , &confirm);
-        }
-        if(confirm == "yes"){
-            for(int j = 0; j < num; j++){
-                if(j != i){
+            printf("found code\n");
+            printf("%d %s %s %d/%d/%d %s %.2f\n",emp[i].code,emp[i].nom,emp[i].prenom,emp[i].dns.day, emp[i].dns.month, emp[i].dns.year,emp[i].poste, emp[i].salaire);
+            for(int j=0; j < num; j++) {
+                if( i != j) {
                     fprintf(pf2, "%d %s %s %d/%d/%d %s %.2f\n",emp[j].code,emp[j].nom,emp[j].prenom,emp[j].dns.day, emp[j].dns.month, emp[j].dns.year,emp[j].poste, emp[j].salaire);
                 }
             }
-        }else{
-            return;
         }
     }
     fclose(pf);
@@ -340,12 +335,12 @@ void delete_employee(int codeEmp){
 
     printf("%d\n",num2);
 
-    // for(int j = 0; j < num2; j++){
-    //     printf("%d %s %s %d/%d/%d %s %.2f\n",emp2[j].code,emp2[j].nom,emp2[j].prenom,emp2[j].dns.day, emp2[j].dns.month, emp2[j].dns.year,emp2[j].poste, emp2[j].salaire);
-    //     fprintf(pf4 , "%d %s %s %d/%d/%d %s %.2f",emp2[j].code,&emp2[j].nom,&emp2[j].prenom,emp2[j].dns.day, emp2[j].dns.month, emp2[j].dns.year,emp2[j].poste, emp2[j].salaire);
-    // }
+    for(int j = 0; j < num2; j++){
+        printf("%d %s %s %d/%d/%d %s %.2f\n",emp2[j].code,emp2[j].nom,emp2[j].prenom,emp2[j].dns.day, emp2[j].dns.month, emp2[j].dns.year,emp2[j].poste, emp2[j].salaire);
+        fprintf(pf4 , "%d %s %s %d/%d/%d %s %.2f\n",emp2[j].code,emp2[j].nom,emp2[j].prenom,emp2[j].dns.day, emp2[j].dns.month, emp2[j].dns.year,emp2[j].poste, emp2[j].salaire);
+    }
 
-    // fclose(pf3);
-    // fclose(pf4);
-    // free(emp2);
+    fclose(pf3);
+    fclose(pf4);
+    free(emp2);
 }
