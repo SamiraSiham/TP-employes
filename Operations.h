@@ -176,58 +176,32 @@ void show_by_prenom(char* prenom){
 
 void update_employee(int codeEmp){
     Emp* emp;
+    Emp* emp2;
     char line[100];
-    int found = 0;
+    char code[5];
     emp = malloc(500 * sizeof(Emp*));
     int num = 0;
     FILE* pf = fopen("employees.txt","r");
-    FILE* pf1 = fopen("temp.txt","w");
+    FILE* pf2 = fopen("temp.txt","w");
     if (pf == NULL) {
         printf("File doesn't open !\n");
         return;
     }
-    if (pf1 == NULL) {
+    if (pf2 == NULL) {
         printf("Temp File doesn't open !\n");
         return;
     }
-
-    // printf("%d\n",fscanf(pf, 
-    // "%d %s %s %d/%d/%d %s",
-    // &emp->code,emp->nom,emp->prenom,&emp->dns.day, 
-    // &emp->dns.month, &emp->dns.year,emp->poste));
-
-
     while (fscanf(pf, 
-    "%d %s %s %d/%d/%d %s",
-    &emp[num].code, &emp[num].nom,&emp[num].prenom,&emp[num].dns.day, 
-    &emp[num].dns.month, &emp[num].dns.year,&emp[num].poste) == 7  
-    ){
-        while(fgets(line, sizeof(line), pf) != NULL){
+    "%d %s %s %d/%d/%d %s %.2f",
+    &emp[num].code,emp[num].nom,emp[num].prenom,&emp[num].dns.day, 
+    &emp[num].dns.month, &emp[num].dns.year,emp[num].poste , &emp[num].salaire) >= 7  
+    && fgets(line, sizeof(line), pf) != NULL) {
         num++;
-        }
-        // if(found){
-        //     pf = fopen("employees.txt","w");
-        //     pf1 = fopen("temp.txt","r");
-        //     num = 0;
-        //     char line2[100];
-        //     while (fscanf(pf1, 
-        //     "%d %s %s %d/%d/%d %s",
-        //     &emp[num].code,emp[num].nom,emp[num].prenom,&emp[num].dns.day, 
-        //     &emp[num].dns.month, &emp[num].dns.year,emp[num].poste) == 7  
-        //     && fgets(line2, sizeof(line2), pf1) != NULL){
-        //         fprintf(pf,"\n%d %s %s %d/%d/%d %s %.2f",emp[num].code , &emp[num].nom, &emp[num].prenom , emp[num].dns.day, emp[num].dns.month , emp[num].dns.year, &emp[num].poste , emp[num].salaire);
-        //         num++;
-        //     }
-        // }
-        // fclose(pf);
-        // fclose(pf1);
     }
-    
-    for(int i=0; i<num; i++) {
-        printf("%d\n", emp[i].code);
-        if(codeEmp == emp[i].code){
-            printf("found code");
-            found = 1;
+    for(int i = 0; i < num; i++){
+        if(emp[i].code == codeEmp){
+            printf("found code\n");
+            // found = 1;
             printf("Nom : ");
             scanf("%s", &emp[i].nom);
 
@@ -249,48 +223,129 @@ void update_employee(int codeEmp){
             
             printf("Salaire : ");
             scanf("%f", &emp[i].salaire);
-            
-            // fprintf(pf,"\n%d %s %s %d/%d/%d %s %.2f",emp[num].code , &emp[num].nom, &emp[num].prenom , emp[num].dns.day, emp[num].dns.month , emp[num].dns.year, &emp[num].poste , emp[num].salaire);
         }
+        fprintf(pf2, "%d %s %s %d/%d/%d %s %.2f\n",emp[i].code,emp[i].nom,emp[i].prenom,emp[i].dns.day, emp[i].dns.month, emp[i].dns.year,emp[i].poste, emp[i].salaire);
+    }
+    fclose(pf);
+    fclose(pf2);
+    free(emp);
+    
+    FILE* pf3;
+    FILE* pf4;
+    pf3 = fopen("temp.txt","r");
+    pf4 = fopen("employees.txt","w");
+
+    if (pf3 == NULL) {
+        printf("File doesn't open !\n");
+        return;
+    }
+    if (pf4 == NULL) {
+        printf("Temp File doesn't open !\n");
+        return;
+    }
+    printf("here\n");
+
+    int num2 = 0;
+    char line2[100];
+    emp2 = malloc(500 * sizeof(Emp*));
+    while (fscanf(pf3, 
+    "%d %s %s %d/%d/%d %s %.2f",
+    &emp2[num2].code,emp2[num2].nom,emp2[num2].prenom,&emp2[num2].dns.day, 
+    &emp2[num2].dns.month, &emp2[num2].dns.year,emp2[num2].poste , &emp2[num2].salaire) >= 7  
+    && fgets(line2, sizeof(line2), pf3) != NULL) {
+        num2++;
     }
 
+    printf("%d\n",num2);
 
+    for(int j = 0; j < num2; j++){
+        printf("%d %s %s %d/%d/%d %s %.2f\n",emp2[j].code,emp2[j].nom,emp2[j].prenom,emp2[j].dns.day, emp2[j].dns.month, emp2[j].dns.year,emp2[j].poste, emp2[j].salaire);
+        fprintf(pf4 , "%d %s %s %d/%d/%d %s %.2f",emp2[j].code,&emp2[j].nom,&emp2[j].prenom,emp2[j].dns.day, emp2[j].dns.month, emp2[j].dns.year,emp2[j].poste, emp2[j].salaire);
+    }
 
-    // while(fgets(line, sizeof(line), pf)){
-    //     fscanf(pf, 
-    // "%d %s %s %d/%d/%d %s",
-    // &emp.code,emp.nom,emp.prenom,&emp.dns.day, 
-    // &emp.dns.month, &emp.dns.year,emp.poste);
-    //     if(emp.code == codeEmp){
-    //         // printf("here");
-    //         found = 1;
-    //         fflush(stdin);
-            // printf("Nom : ");
-            // scanf("%s", emp.nom);
+    fclose(pf3);
+    fclose(pf4);
+    free(emp2);
+}
 
-            // printf("Prenom : ");
-            // scanf("%s", emp.prenom);
-
-            // printf("Date de naissance\n");
-            // printf("Jour : ");
-            // scanf("%d", emp.dns.day);
-            
-            // printf("Mois : ");
-            // scanf("%d", emp.dns.month);
-            
-            // printf("Annee : ");
-            // scanf("%d", emp.dns.year);
-            
-            // printf("Poste : ");
-            // scanf("%s", emp.poste);
-            
-            // printf("Salaire : ");
-            // scanf("%f", emp.salaire);
-    //     }
-    //     fwrite(&emp, sizeof(Emp), 1, pf1);
-    //     // num++;
-    // }
-    // fclose(pf);
-    //     fclose(pf1);
+void delete_employee(int codeEmp){
+    Emp* emp;
+    Emp* emp2;
+    char line[100];
+    char code[5];
+    emp = malloc(500 * sizeof(Emp*));
+    int num = 0;
+    FILE* pf = fopen("employees.txt","r");
+    FILE* pf2 = fopen("temp.txt","w");
+    char* confirm = malloc(5);
+    if (pf == NULL) {
+        printf("File doesn't open !\n");
+        return;
+    }
+    if (pf2 == NULL) {
+        printf("Temp File doesn't open !\n");
+        return;
+    }
+    while (fscanf(pf, 
+    "%d %s %s %d/%d/%d %s %.2f",
+    &emp[num].code,emp[num].nom,emp[num].prenom,&emp[num].dns.day, 
+    &emp[num].dns.month, &emp[num].dns.year,emp[num].poste , &emp[num].salaire) >= 7  
+    && fgets(line, sizeof(line), pf) != NULL) {
+        num++;
+    }
+    for(int i = 0; i < num; i++){
+        if(emp[i].code == codeEmp){
+            printf("Are you sure ? [yes/no] : ");
+            scanf("%s" , &confirm);
+        }
+        if(confirm == "yes"){
+            for(int j = 0; j < num; j++){
+                if(j != i){
+                    fprintf(pf2, "%d %s %s %d/%d/%d %s %.2f\n",emp[j].code,emp[j].nom,emp[j].prenom,emp[j].dns.day, emp[j].dns.month, emp[j].dns.year,emp[j].poste, emp[j].salaire);
+                }
+            }
+        }else{
+            return;
+        }
+    }
+    fclose(pf);
+    fclose(pf2);
+    free(emp);
     
+    FILE* pf3;
+    FILE* pf4;
+    pf3 = fopen("temp.txt","r");
+    pf4 = fopen("employees.txt","w");
+
+    if (pf3 == NULL) {
+        printf("File doesn't open !\n");
+        return;
+    }
+    if (pf4 == NULL) {
+        printf("Temp File doesn't open !\n");
+        return;
+    }
+    printf("here\n");
+
+    int num2 = 0;
+    char line2[100];
+    emp2 = malloc(500 * sizeof(Emp*));
+    while (fscanf(pf3, 
+    "%d %s %s %d/%d/%d %s %.2f",
+    &emp2[num2].code,emp2[num2].nom,emp2[num2].prenom,&emp2[num2].dns.day, 
+    &emp2[num2].dns.month, &emp2[num2].dns.year,emp2[num2].poste , &emp2[num2].salaire) >= 7  
+    && fgets(line2, sizeof(line2), pf3) != NULL) {
+        num2++;
+    }
+
+    printf("%d\n",num2);
+
+    // for(int j = 0; j < num2; j++){
+    //     printf("%d %s %s %d/%d/%d %s %.2f\n",emp2[j].code,emp2[j].nom,emp2[j].prenom,emp2[j].dns.day, emp2[j].dns.month, emp2[j].dns.year,emp2[j].poste, emp2[j].salaire);
+    //     fprintf(pf4 , "%d %s %s %d/%d/%d %s %.2f",emp2[j].code,&emp2[j].nom,&emp2[j].prenom,emp2[j].dns.day, emp2[j].dns.month, emp2[j].dns.year,emp2[j].poste, emp2[j].salaire);
+    // }
+
+    // fclose(pf3);
+    // fclose(pf4);
+    // free(emp2);
 }

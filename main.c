@@ -56,6 +56,9 @@ int main(){
                 // delete_employee();
                 break;
             case 5:
+                printf("Enter employee code: ");
+                scanf("%d",&code);
+                delete_employee(code);
                 // delete employee function
                 break;
             case 6:

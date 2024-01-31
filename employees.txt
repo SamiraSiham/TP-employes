@@ -22,4 +22,3 @@
 1625 Kato Yoshimi 29/01/1987 Sales-Rep 32000.00
 1702 Gerard Martin 22/03/1992 Sales-Rep 17000.00
 1111 siham samira 30/11/2003 rh 2000.00
-1211 siham ss 30/11/2003 rr 23421.00
